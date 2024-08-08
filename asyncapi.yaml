@@ -1,0 +1,76 @@
+asyncapi: 3.0.0
+info:
+  title: Pokemon Trading API
+  description: This API helps users to trade pokemons
+  version: 0.0.1
+servers:
+  websockets:
+    host: localhost:8080
+    protocol: ws
+channels:
+  TradeList:
+    address: /trade
+    messages:
+      tradeList:
+        $ref: '#/components/messages/tradeList'
+  OpenTrade:
+    address: /new
+    messages:
+      openTrade:
+        $ref: '#/components/messages/newTrade'
+  CloseTrade:
+    address: /close
+    messages:
+      closeTrade:
+        $ref: '#/components/messages/closeTrade'
+operations:
+  fetchTradeList:
+    action: receive
+    channel:
+      $ref: '#/channels/TradeList'
+    messages:
+      - $ref: '#/channels/TradeList/messages/tradeList'
+  openNewTrade:
+    action: send
+    channel:
+      $ref: '#/channels/OpenTrade'
+    messages:
+      - $ref: '#/channels/OpenTrade/messages/openTrade'
+  closeTrade:
+    action: send
+    channel:
+      $ref: '#/channels/CloseTrade'
+    messages:
+      - $ref: '#/channels/CloseTrade/messages/closeTrade'
+components:
+  messages:
+    tradeList:
+      payload:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            game:
+              type: string
+            pokemon:
+              type: string
+            want:
+              type: string
+    newTrade:
+      payload:
+        type: object
+        properties:
+          game:
+            type: string
+          pokemon:
+            type: string
+          want:
+            type: string
+    closeTrade:
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
