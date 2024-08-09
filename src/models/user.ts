@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from 'uuid'
-import { TradeInterface } from './trade'
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
 
 export class User {
     private id: string
     private username: string
     private socket_id: string
+    private trade?: string
 
     constructor(username: string, socket_id: string) {
         this.id = uuidv4()
@@ -14,13 +14,28 @@ export class User {
     }
 
     get socketId(): string {
-        return this.socketId
+        return this.socket_id
     }
 
-    addTrade(Trade: TradeInterface) {
-
+    get Id(): string {
+        return this.id
     }
 
+    get userName(): string {
+        return this.username
+    }
+
+    get tradeId(): string | undefined {
+        return this.trade
+    }
+
+    addTrade(tradeId: string) {
+        this.trade = tradeId
+    }
+
+    hasTrade(): boolean {
+        return this.trade ? true : false
+    }
 
 
     static generateNewUser(username: string, socket_id: string): User {
@@ -33,16 +48,17 @@ export class UsersDatabase {
 
     addUser(socket_id: string) {
         this.users.push(User.generateNewUser(
-            uniqueNamesGenerator({dictionaries: [adjectives, colors, animals], length: 2}),
+            uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 2 }),
             socket_id
         ))
     }
 
     removeUser(socket_id: string) {
         this.users = this.users.filter(u => {
-            if(u.socketId !=  socket_id) {
+            if (u.socketId != socket_id) {
                 return u
             }
         })
     }
+
 }
