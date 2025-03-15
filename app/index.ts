@@ -28,6 +28,9 @@ io.on('connection', (socket) => {
 })
 
 
+app.get("/", (req, res) => {
+    res.send("Pokemon Trade API")
+})
 
 
 server.listen(8080, () => {

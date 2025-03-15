@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "validate-spec": "asyncapi validate",
-    "start": "ts-node src/index.ts"
+    "start": "bun run app/index.ts",
+    "build": "bun build app/index.ts",
+    "generate-docs": "asyncapi generate fromTemplate ./asyncapi.yaml @asyncapi/html-template --force-write --output=./spec"
   },
   "keywords": [],
   "author": "",
@@ -18,10 +20,11 @@
     "@types/socket.io": "^3.0.2",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
+    "dotenv": "^16.4.7",
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
+    "typescript": "^5.8.2",
     "unique-names-generator": "^4.7.1",
     "uuid": "^10.0.0",
     "ws": "^8.18.0"
