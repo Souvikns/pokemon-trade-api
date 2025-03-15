@@ -8,7 +8,7 @@
     "validate-spec": "asyncapi validate",
     "start": "bun run app/index.ts",
     "build": "bun build app/index.ts",
-    "generate-docs": "asyncapi generate fromTemplate ./asyncapi.yaml @asyncapi/html-template --force-write --output=./spec"
+    "generate-docs": "asyncapi generate fromTemplate ./asyncapi.yaml @asyncapi/html-template --force-write --output=./spec --use-new-generator"
   },
   "keywords": [],
   "author": "",

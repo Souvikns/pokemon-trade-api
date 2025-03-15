@@ -4,9 +4,11 @@ import http from 'http'
 
 import { UsersDatabase } from './models/user'
 import { TradeList } from './models/trade'
+import path from 'path'
 
 
 const app = express()
+app.use(express.static(path.join(__dirname, "../spec")))
 const server = http.createServer(app)
 const io = new Server(server)
 
@@ -29,7 +31,7 @@ io.on('connection', (socket) => {
 
 
 app.get("/", (req, res) => {
-    res.send("Pokemon Trade API")
+    res.sendFile(path.join(__dirname, "../spec/index.html"))
 })
 
 
