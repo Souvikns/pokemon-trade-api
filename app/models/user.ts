@@ -61,4 +61,7 @@ export class UsersDatabase {
         })
     }
 
+    listUsers() {
+        return this.users
+    }
 }

@@ -2,10 +2,14 @@ import express from 'express'
 import { Server } from 'socket.io'
 import http from 'http'
 
-import { UsersDatabase } from './models/user'
+import { User, UsersDatabase } from './models/user'
 import { TradeList } from './models/trade'
 import path from 'path'
 
+import { specRouter } from './controller/routes/spec'
+
+import { hi } from './controller/events/hi'
+import { UserEvent } from './controller/events/user'
 
 const app = express()
 app.use(express.static(path.join(__dirname, "../spec")))
@@ -16,23 +20,19 @@ const userDatabase = new UsersDatabase()
 const tradeDatabase = new TradeList()
 
 io.on('connection', (socket) => {
-    userDatabase.addUser(socket.id)
+    hi.handler(socket, io)
 
-    socket.on("new-trade", (trade) => {
-        const tradeId = tradeDatabase.addTrade(trade.game, trade.pokemon_for_trade, trade.pokemon_wanted)
-        socket.emit('trade-list',)
+    const userEvent = new UserEvent(userDatabase)
+    userEvent.handler(socket, io)
 
-    })
-
-    socket.on('dissconnect', () => {
+    socket.on('disconnect', () => {
         userDatabase.removeUser(socket.id)
     })
 })
 
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../spec/index.html"))
-})
+app.use('/', specRouter.bind())
+
 
 
 server.listen(8080, () => {
