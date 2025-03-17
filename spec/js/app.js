@@ -7,14 +7,15 @@
     "version": "0.0.1"
   },
   "servers": {
-    "websockets": {
-      "host": "localhost:8080",
+    "socketio": {
+      "host": "localhost:8080/events",
       "protocol": "ws"
     }
   },
   "channels": {
     "TradeList": {
-      "address": "/trade",
+      "description": "To list all the open trade of a specific game.",
+      "address": "trade",
       "messages": {
         "tradeList": {
           "payload": {
@@ -28,6 +29,11 @@
                 },
                 "game": {
                   "type": "string",
+                  "enum": [
+                    "SV",
+                    "SWSH",
+                    "BDSP"
+                  ],
                   "x-parser-schema-id": "<anonymous-schema-4>"
                 },
                 "pokemon": {
@@ -47,10 +53,14 @@
           "x-parser-message-name": "tradeList"
         }
       },
+      "servers": [
+        "$ref:$.servers.socketio"
+      ],
       "x-parser-unique-object-id": "TradeList"
     },
     "OpenTrade": {
-      "address": "/new",
+      "description": "open a new trade.",
+      "address": "new",
       "messages": {
         "openTrade": {
           "payload": {
@@ -58,6 +68,11 @@
             "properties": {
               "game": {
                 "type": "string",
+                "enum": [
+                  "SV",
+                  "SWSH",
+                  "BDSP"
+                ],
                 "x-parser-schema-id": "<anonymous-schema-8>"
               },
               "pokemon": {
@@ -75,10 +90,14 @@
           "x-parser-message-name": "newTrade"
         }
       },
+      "servers": [
+        "$ref:$.servers.socketio"
+      ],
       "x-parser-unique-object-id": "OpenTrade"
     },
     "CloseTrade": {
-      "address": "/close",
+      "description": "Close the trade once the trade is successfully completed.",
+      "address": "close",
       "messages": {
         "closeTrade": {
           "payload": {
@@ -95,6 +114,9 @@
           "x-parser-message-name": "closeTrade"
         }
       },
+      "servers": [
+        "$ref:$.servers.socketio"
+      ],
       "x-parser-unique-object-id": "CloseTrade"
     }
   },

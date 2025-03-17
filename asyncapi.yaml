@@ -4,25 +4,34 @@ info:
   description: This API helps users to trade pokemons
   version: 0.0.1
 servers:
-  websockets:
-    host: localhost:8080
+  socketio:
+    host: localhost:8080/events
     protocol: ws
 channels:
   TradeList:
-    address: /trade
+    description: To list all the open trade of a specific game.
+    address: trade
     messages:
       tradeList:
         $ref: '#/components/messages/tradeList'
+    servers:
+      - $ref: '#/servers/socketio'
   OpenTrade:
-    address: /new
+    description: open a new trade.
+    address: new
     messages:
       openTrade:
         $ref: '#/components/messages/newTrade'
+    servers:
+      - $ref: '#/servers/socketio'
   CloseTrade:
-    address: /close
+    description: Close the trade once the trade is successfully completed.
+    address: close
     messages:
       closeTrade:
         $ref: '#/components/messages/closeTrade'
+    servers:
+      - $ref: '#/servers/socketio'
 operations:
   fetchTradeList:
     action: receive
@@ -54,6 +63,10 @@ components:
               type: string
             game:
               type: string
+              enum:
+                - SV
+                - SWSH
+                - BDSP
             pokemon:
               type: string
             want:
@@ -64,6 +77,10 @@ components:
         properties:
           game:
             type: string
+            enum:
+              - SV
+              - SWSH
+              - BDSP
           pokemon:
             type: string
           want:
